@@ -8,32 +8,32 @@ html, body {
 }
 
 *, *:before, *:after {
-    box-sizing: inherit; /* This ensures padding doesn't add extra width */
+    box-sizing: inherit; 
 }
 
-/* 2. FIX THE TOP NAV BAR */
+
 .top-nav {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Ensures it is exactly screen width */
+    width: 100%; 
     padding: 15px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    /* ... your gradient and animation code ... */
+    
 }
 
-/* 3. FIX THE HERO SECTION */
+
 .hero {
-    width: 100vw; /* Force it to be exactly the Viewport Width */
+    width: 100vw; 
     height: 100vh;
     background-size: cover;
     background-position: center;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Extra safety for the logo image */
+    overflow: hidden; 
 }
 * {
     margin: 0;
@@ -100,7 +100,7 @@ body {
 .hero {
     height: 100vh;
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                      url('camberwell.jpeg'); 
+     url('camberwell.jpeg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -158,21 +158,6 @@ body {
     transform: scale(1.05);
 }
 
-.menu-area {
-    padding: 100px 20px;
-    
-
-    background-image: linear-gradient(rgba(245, 245, 240, 0.8), rgba(245, 245, 240, 0.8)), 
-                      url('tablecloth.jpg'); 
-    
-    background-size: cover;       
-    background-position: center;  
-    background-attachment: fixed; 
-    
-    min-height: 100vh;            
-    max-width: 100%;              
-    margin: 0 auto;
-}
 
 .menu-intro {
     text-align: center;
@@ -183,22 +168,97 @@ body {
 
 .menu-intro h2 { font-size: 3.5rem; font-weight: 900; }
 
+
+/* --- THE NEW UPGRADED MENU AREA --- */
+.menu-area {
+    padding: 100px 20px;
+    min-height: 100vh;
+    max-width: 100%;
+    position: relative; /* Needed for the blur layer */
+    overflow: hidden;
+    background-color: #fdfaf4; 
+    
+    /* The Moving Checkerboard */
+    background-image: 
+        linear-gradient(45deg, #faefef 25%, transparent 25%), 
+        linear-gradient(-45deg, #faefef 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #faefef 75%), 
+        linear-gradient(-45deg, transparent 75%, #faefef 75%);
+    background-size: 80px 80px;
+    background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
+    animation: shiftBackground 10s linear infinite;
+}
+
+/* THE GLASS BLUR LAYER: This blurs the floor when you hover a card */
+.menu-area::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px);
+    pointer-events: none;
+    transition: all 0.6s ease;
+    z-index: 1;
+}
+
+/* Activation: When you touch the menu area, the floor blurs slightly */
+.menu-area:hover::after {
+    background: rgba(253, 250, 244, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* --- THE 3D INTERACTIVE CARDS --- */
+
 .columns-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
+    perspective: 1500px; /* High perspective for 3D */
+    position: relative;
+    z-index: 10; /* Keeps cards above the blur */
 }
 
 .menu-card {
     background: white;
     border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-    height: 650px; 
+    height: 650px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid #eee;
+    
+    /* Smooth transitions for everything */
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform-style: preserve-3d;
 }
+
+/* FOCUS EFFECT: When you hover the container, all cards fade out... */
+.columns-container:hover .menu-card {
+    opacity: 0.5;
+    filter: grayscale(0.5) blur(2px);
+    transform: scale(0.95);
+}
+
+/* ...EXCEPT the one you are actually touching! It glows and pops out */
+.columns-container .menu-card:hover {
+    opacity: 1;
+    filter: grayscale(0) blur(0px);
+    /* Tilts toward the right as you requested */
+    transform: translateY(-20px) rotateX(6deg) rotateY(4deg) scale(1.08);
+    z-index: 100;
+    
+    /* THE SICK NEON GLOW SHADOW */
+    box-shadow: 
+        -15px 30px 50px rgba(0,0,0,0.2), 
+        0 0 20px rgba(239, 68, 68, 0.4), 
+        0 0 50px rgba(239, 68, 68, 0.2);
+    
+    border: 2px solid #EF4444;
+}
+
+
+
+
 
 .card-header {
     background: #EF4444;
@@ -207,6 +267,14 @@ body {
     text-align: center;
     font-size: 2rem;
     font-weight: 900;
+    
+    /* NEW: NEON BUZZ ANIMATION */
+    animation: neonBuzz 4s infinite alternate;
+}
+
+@keyframes neonBuzz {
+    0%, 100% { background-color: #EF4444; }
+    50% { background-color: #ff5f5f; } /* Subtle pulse */
 }
 
 .card-header span {
@@ -232,8 +300,35 @@ body {
     color: #111;
     font-weight: 700;
     font-size: 1rem;
-    border-bottom: 1px dotted #ccc; 
-    transition: 0.2s;
+    border-bottom: 1px dotted #ccc;
+    transition: all 0.3s ease;
+    
+    /* NEW: PREPARE FOR HIGHLIGHTER EFFECT */
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* NEW: THE HIGHLIGHTER BAR */
+.student-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF5F5; /* Soft red wash */
+    z-index: -1;
+    transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.student-link:hover::before {
+    left: 0; /* Slide highlight in */
+}
+
+.student-link:hover {
+    color: #EF4444;
+    padding-left: 15px;
 }
 
 .student-link:hover {
@@ -251,13 +346,13 @@ body {
 .card-list::-webkit-scrollbar { width: 6px; }
 .card-list::-webkit-scrollbar-thumb { background: #EF4444; border-radius: 10px; }
 
-/* --- FOOTER STYLING --- */
+
 .site-footer {
     background-color: #000000; /* Deep Black */
     color: #ffffff;
     padding: 80px 50px 40px 50px;
     width: 100%;
-    margin-top: -1px; /* Ensures no gap between menu and footer */
+    margin-top: -1px; 
 }
 
 .footer-container {
@@ -265,7 +360,7 @@ body {
     margin: 0 auto;
 }
 
-/* Header part of footer */
+
 .footer-header {
     display: flex;
     justify-content: space-between;
@@ -291,7 +386,7 @@ body {
 }
 
 .back-to-top:hover {
-    color: #EF4444; /* UAL Red */
+    color: #EF4444; 
 }
 
 /* Credits Grid */
@@ -315,7 +410,7 @@ body {
 }
 
 .credit-box .email {
-    color: #888; /* Grey text for email */
+    color: #888; 
     text-decoration: none;
     font-size: 0.85rem;
     transition: all 0.3s ease;
@@ -323,10 +418,9 @@ body {
 
 .credit-box .email:hover {
     color: #EF4444;
-    padding-left: 5px; /* Tiny movement effect */
+    padding-left: 5px; 
 }
 
-/* Bottom copyright */
 .footer-bottom {
     text-align: center;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -350,4 +444,210 @@ body {
 
 html {
     scroll-behavior: smooth;
+}
+
+
+
+.about-page-body {
+    background-color: #F5F5F0;
+}
+
+
+.about-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 20px 60px 20px;
+
+  
+    background-color: #fdfaf4; 
+
+    
+    background-image: 
+        linear-gradient(45deg, #faefef 25%, transparent 25%), 
+        linear-gradient(-45deg, #faefef 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #faefef 75%), 
+        linear-gradient(-45deg, transparent 75%, #faefef 75%);
+    background-size: 80px 80px; 
+    background-position: 0 0, 0 40px, 40px -40px, -40px 0px;
+
+   
+    animation: shiftBackground 5s linear infinite;
+}
+
+
+@keyframes shiftBackground {
+    from { background-position: 0 0, 0 40px, 40px -40px, -40px 0px; }
+    to { background-position: 80px 80px, 80px 120px, 120px 40px, 40px 80px; }
+}
+
+
+.about-card {
+    background: white;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 60px;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(239, 68, 68, 0.15); 
+    border-left: 15px solid #EF4444;
+    z-index: 10;
+}
+
+.about-card {
+    background: white;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 60px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    border-left: 15px solid #EF4444; 
+}
+
+.specials-label {
+    background: #EF4444;
+    color: white;
+    padding: 5px 15px;
+    font-weight: 900;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.about-header h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #111;
+}
+
+.reveal-text {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: revealIn 1s ease forwards;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+@keyframes revealIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.signatures {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+    font-family: 'Pacifico', cursive; 
+    font-size: 1.5rem;
+    color: #EF4444;
+}
+
+.animate-flicker {
+    animation: flickerEffect 3s linear infinite;
+}
+
+@keyframes flickerEffect {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.8; }
+}
+
+.about-header h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-shadow: 4px 4px 0px rgba(239, 68, 68, 0.1);
+    color: #111;
+}
+
+/* --- THE NEON WHEEL LOADER STYLES --- */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0d0d0d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+    transition: transform 0.8s cubic-bezier(1, 0, 0, 1), opacity 0.5s ease;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* THE NEON WHEEL */
+.neon-wheel {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.neon-wheel .ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid transparent;
+    border-radius: 50%;
+    border-top-color: #EF4444; /* UAL Red */
+    animation: loaderSpin 1.5s linear infinite;
+}
+
+/* Second ring (Middle) */
+.neon-wheel .ring:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    border-top-color: #FF8E53; /* Orange */
+    animation-duration: 2s;
+    animation-direction: reverse;
+}
+
+/* Third ring (Inner) */
+.neon-wheel .ring:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    border-top-color: #ffffff;
+    animation-duration: 1s;
+}
+
+.loader-inner-text {
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+@keyframes loaderSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* THE PULSING TEXT */
+.loading-text {
+    color: white;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: textFlicker 1.5s ease-in-out infinite;
+}
+
+@keyframes textFlicker {
+    0%, 100% { opacity: 0.3; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+/* THE EXIT ANIMATION: Screen slides UP */
+.loader-hidden {
+    transform: translateY(-100%);
+    pointer-events: none;
 }
