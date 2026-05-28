@@ -3,7 +3,7 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* This prevents the "swiping left" to white space */
+    overflow-x: hidden; 
     box-sizing: border-box;
 }
 
@@ -162,6 +162,8 @@ body {
 .menu-intro {
     text-align: center;
     margin-bottom: 60px;
+    position: relative;
+    z-index: 50;
 }
 
 
@@ -169,16 +171,16 @@ body {
 .menu-intro h2 { font-size: 3.5rem; font-weight: 900; }
 
 
-/* --- THE NEW UPGRADED MENU AREA --- */
+
 .menu-area {
     padding: 100px 20px;
     min-height: 100vh;
     max-width: 100%;
-    position: relative; /* Needed for the blur layer */
+    position: relative; 
     overflow: hidden;
     background-color: #fdfaf4; 
     
-    /* The Moving Checkerboard */
+    
     background-image: 
         linear-gradient(45deg, #faefef 25%, transparent 25%), 
         linear-gradient(-45deg, #faefef 25%, transparent 25%), 
@@ -189,7 +191,7 @@ body {
     animation: shiftBackground 10s linear infinite;
 }
 
-/* THE GLASS BLUR LAYER: This blurs the floor when you hover a card */
+
 .menu-area::after {
     content: "";
     position: absolute;
@@ -201,21 +203,21 @@ body {
     z-index: 1;
 }
 
-/* Activation: When you touch the menu area, the floor blurs slightly */
+
 .menu-area:hover::after {
     background: rgba(253, 250, 244, 0.3);
     backdrop-filter: blur(10px);
 }
 
-/* --- THE 3D INTERACTIVE CARDS --- */
+
 
 .columns-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
-    perspective: 1500px; /* High perspective for 3D */
+    perspective: 1500px; 
     position: relative;
-    z-index: 10; /* Keeps cards above the blur */
+    z-index: 10; 
 }
 
 .menu-card {
@@ -227,19 +229,19 @@ body {
     overflow: hidden;
     border: 1px solid #eee;
     
-    /* Smooth transitions for everything */
+    
     transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     transform-style: preserve-3d;
 }
 
-/* FOCUS EFFECT: When you hover the container, all cards fade out... */
+
 .columns-container:hover .menu-card {
     opacity: 0.5;
     filter: grayscale(0.5) blur(2px);
     transform: scale(0.95);
 }
 
-/* ...EXCEPT the one you are actually touching! It glows and pops out */
+
 .columns-container .menu-card:hover {
     opacity: 1;
     filter: grayscale(0) blur(0px);
@@ -247,7 +249,7 @@ body {
     transform: translateY(-20px) rotateX(6deg) rotateY(4deg) scale(1.08);
     z-index: 100;
     
-    /* THE SICK NEON GLOW SHADOW */
+    
     box-shadow: 
         -15px 30px 50px rgba(0,0,0,0.2), 
         0 0 20px rgba(239, 68, 68, 0.4), 
@@ -303,13 +305,13 @@ body {
     border-bottom: 1px dotted #ccc;
     transition: all 0.3s ease;
     
-    /* NEW: PREPARE FOR HIGHLIGHTER EFFECT */
+    
     position: relative;
     z-index: 1;
     overflow: hidden;
 }
 
-/* NEW: THE HIGHLIGHTER BAR */
+
 .student-link::before {
     content: "";
     position: absolute;
@@ -317,13 +319,13 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background-color: #FFF5F5; /* Soft red wash */
+    background-color: #FFF5F5; 
     z-index: -1;
     transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .student-link:hover::before {
-    left: 0; /* Slide highlight in */
+    left: 0; 
 }
 
 .student-link:hover {
@@ -348,7 +350,7 @@ body {
 
 
 .site-footer {
-    background-color: #000000; /* Deep Black */
+    background-color: #000000; 
     color: #ffffff;
     padding: 80px 50px 40px 50px;
     width: 100%;
@@ -389,7 +391,7 @@ body {
     color: #EF4444; 
 }
 
-/* Credits Grid */
+
 .footer-credits {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -434,7 +436,7 @@ body {
     text-transform: uppercase;
 }
 
-/* Ensure footer looks good on mobile */
+
 @media (max-width: 768px) {
     .footer-header {
         flex-direction: column;
@@ -560,7 +562,7 @@ html {
     color: #111;
 }
 
-/* --- THE NEON WHEEL LOADER STYLES --- */
+
 #loader {
     position: fixed;
     top: 0;
@@ -581,7 +583,7 @@ html {
     align-items: center;
 }
 
-/* THE NEON WHEEL */
+
 .neon-wheel {
     position: relative;
     width: 120px;
@@ -597,20 +599,20 @@ html {
     height: 100%;
     border: 4px solid transparent;
     border-radius: 50%;
-    border-top-color: #EF4444; /* UAL Red */
+    border-top-color: #EF4444; 
     animation: loaderSpin 1.5s linear infinite;
 }
 
-/* Second ring (Middle) */
+
 .neon-wheel .ring:nth-child(2) {
     width: 80%;
     height: 80%;
-    border-top-color: #FF8E53; /* Orange */
+    border-top-color: #FF8E53; 
     animation-duration: 2s;
     animation-direction: reverse;
 }
 
-/* Third ring (Inner) */
+
 .neon-wheel .ring:nth-child(3) {
     width: 60%;
     height: 60%;
@@ -630,7 +632,7 @@ html {
     to { transform: rotate(360deg); }
 }
 
-/* THE PULSING TEXT */
+
 .loading-text {
     color: white;
     margin-top: 40px;
@@ -646,7 +648,7 @@ html {
     50% { opacity: 1; transform: scale(1); }
 }
 
-/* THE EXIT ANIMATION: Screen slides UP */
+
 .loader-hidden {
     transform: translateY(-100%);
     pointer-events: none;
